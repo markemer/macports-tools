@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use File::Path qw(make_path);
+
+my($portname) = @ARGV;
+my $portdir = `port dir $portname` or die;
+
+chomp($portdir);
+
+my $newdir = $portdir;
+
+$newdir =~ s/macports-ports/macports-development-ports/;
+
+print "$portdir -> $newdir \n";
+
+make_path($newdir);
+
+`cp -R $portdir/* $newdir`

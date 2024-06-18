@@ -1,0 +1,24 @@
+#!/usr/bin/env rlwrap port-tclsh
+
+set macportsPrefix /opt/local
+array set ui_options {}
+set ui_options(ports_verbose) yes
+
+package require macports
+package require Pextlib 1.0
+mportinit ui_options
+
+proc ListAllGlobals {{?pattern? *}} {
+    foreach {name} [lsort [info globals ${?pattern?}]] {
+        upvar {#0} $name var
+        if {[array exists var]} {
+            foreach {key val} [array get var] {
+                puts "${name}($key) [list $val]"
+            }
+        } else {
+            puts "$name [list $var]"
+        }
+    }
+}
+ListAllGlobals
+ListAllGlobals tcl_platform
